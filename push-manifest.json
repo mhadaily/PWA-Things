@@ -1,0 +1,66 @@
+{
+  "/": {
+    "src/components/my-app.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "src/components/my-web-bluetooth.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  },
+  "/web-bluetooth": {
+    "src/components/my-app.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "src/components/my-web-bluetooth.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  },
+  "/web-usb": {
+    "src/components/my-app.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "src/components/my-web-usb.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  },
+  "/web-nfc": {
+    "src/components/my-app.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "src/components/my-web-nfc.js": {
+      "crossorigin": "anonymous",
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  }
+}
