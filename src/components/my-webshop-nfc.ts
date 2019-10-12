@@ -190,7 +190,7 @@ export class MyMyoArmBand extends LitElement {
   }
 
   async firstUpdated() {
-    if (NFCReader || NFCWriter) {
+    if (typeof NFCReader !== 'undefined' || typeof NFCWriter !== 'undefined') {
       console.log('NFC Supported!');
       try {
         const reader = new NFCReader({ recordType: 'json' });

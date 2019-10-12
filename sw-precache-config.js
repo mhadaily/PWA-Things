@@ -12,6 +12,7 @@ module.exports = {
   staticFileGlobs: [
     'manifest.json',
     'src/**/*',
+    'images/**/*',
   ],
   runtimeCaching: [
     {

@@ -74,14 +74,17 @@ export class MyADB extends LitElement {
 
   async connect() {
     if (this.vm) {
+      console.log('VM existed!');
       return;
     }
     try {
+      console.log('trying to connect to WEBSUB');
       this.vm = await Adb.open('WebUSB');
       this.boot = await this.vm.connectAdb('host::');
       this.sync = await this.boot.sync();
       console.log('Conneted to WebUSB');
     } catch (error) {
+      console.log(`Error: ${error}`);
       this.vm = null;
       this.boot = null;
       this.sync = null;
@@ -98,8 +101,10 @@ export class MyADB extends LitElement {
       let data = await res.blob();
       let name = this.url.split('/').reverse()[0];
       let file = new File([data], name);
+      console.log(`Start pushing ${name}`);
       this.sync.push(file, `/sdcard/Download/${name}`, '0644', (e: any) => {
-        console.log(e, 'Done sending file');
+        const msg = e === 0 ? 'Success!' : 'Error!';
+        console.log(`${msg}`, 'Done sending file');
         this.loading = false;
       });
     } catch (e) {
@@ -146,13 +151,17 @@ export class MyADB extends LitElement {
   }
 
   async download() {
-    let content = await this.sync.pull('/sdcard/Download/sample.png');
-    let a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([content]));
-    a.download = 'test_webadb.png';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    try {
+      let content = await this.sync.pull('/sdcard/DCIM/Camera/sample.jpg');
+      let a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([content]));
+      a.download = 'test_webadb.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (e) {
+      console.error(`Something is wrong! ${e}`);
+    }
   }
 
   protected render() {
