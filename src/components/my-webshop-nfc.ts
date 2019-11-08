@@ -4,8 +4,8 @@ import { repeat } from 'lit-html/directives/repeat';
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles.js';
 
-declare const NFCReader: any;
-declare const NFCWriter: any;
+declare const NDEFReader: any;
+declare const NDEFWriter: any;
 
 @customElement('my-webshop-nfc')
 export class MyMyoArmBand extends LitElement {
@@ -156,27 +156,36 @@ export class MyMyoArmBand extends LitElement {
   }
 
   async writeToNFC() {
-    const writer = new NFCWriter();
+    const writer = new NDEFWriter();
+    const encoder = new TextEncoder();
     await writer.push(
       {
         records: [
           {
-            recordType: 'json',
+            id: '/pwathing/web-nfc',
+            recordType: 'mime',
             mediaType: 'application/json',
-            data: {
-              id: '12345678900987654321',
-              name: 'Majid',
-              role: 'Cashier'
-            }
+            data: encoder.encode(
+              JSON.stringify({
+                id: '12345678900987654321',
+                name: 'Majid',
+                role: 'Cashier'
+              })
+            )
           },
+          { recordType: 'url', data: 'https://w3c.github.io/web-nfc/' },
+          { recordType: 'text', data: 'Hello World' },
           {
-            recordType: 'json',
+            id: '/pwathing/web-nfc',
+            recordType: 'mime',
             mediaType: 'application/json',
-            data: {
-              id: '12345678900987654322',
-              name: 'John',
-              role: 'Unknown'
-            }
+            data: encoder.encode(
+              JSON.stringify({
+                id: '12345678900987654322',
+                name: 'John',
+                role: 'Unknown'
+              })
+            )
           }
         ]
       },
@@ -190,42 +199,50 @@ export class MyMyoArmBand extends LitElement {
   }
 
   async firstUpdated() {
-    if (typeof NFCReader !== 'undefined' || typeof NFCWriter !== 'undefined') {
+    if (typeof NDEFReader !== 'undefined' || typeof NDEFWriter !== 'undefined') {
       console.log('NFC Supported!');
       try {
-        const reader = new NFCReader({ recordType: 'json' });
+        const reader = new NDEFReader();
         reader.onreading = ({ message }: any) => {
-          console.log('NFC message is coming...');
-          if (message.records[0].recordType == 'empty') {
+          console.log('NFC message is coming...', message.records.length);
+          if (message.records.length == 0 || message.records[0].recordType == 'empty') {
             return;
           }
 
+          const decoder = new TextDecoder();
           for (let record of message.records) {
+            console.log('RecordType', record.recordType, record);
             if (record.recordType === 'json') {
-              const _record = record.toJSON();
-              console.log(_record);
-              if (_record.id === '12345678900987654321') {
-                console.log('Auth Employee');
-                this.operator = _record;
-                this.isAuth = true;
-              } else if (_record.id === '12345678900987654322') {
-                console.log('nonAuth Employee');
-                this.operatorNotAllow = `${_record.name}, sorry you are not allowed`;
-              } else {
-                console.log('Products detected!');
-                this.items = [
-                  ...this.items,
-                  {
-                    id: _record.id,
-                    price: _record.price,
-                    name: _record.name
-                  }
-                ];
+              if (record.mediaType === 'application/json') {
+                const _record = JSON.parse(decoder.decode(record.data));
+                console.log(_record);
+                if (_record.id === '12345678900987654321') {
+                  console.log('Auth Employee');
+                  this.operator = _record;
+                  this.isAuth = true;
+                } else if (_record.id === '12345678900987654322') {
+                  console.log('nonAuth Employee');
+                  this.operatorNotAllow = `${_record.name}, sorry you are not allowed`;
+                } else {
+                  console.log('Products detected!');
+                  this.items = [
+                    ...this.items,
+                    {
+                      id: _record.id,
+                      price: _record.price,
+                      name: _record.name
+                    }
+                  ];
+                }
               }
             }
           }
         };
-        reader.scan();
+        reader.scan({
+          mediaType: 'application/json'
+          // recordType: "w3.org:webnfc",
+          // id: "/pwathing/web-nfc",
+        });
       } catch (err) {
         console.log('Reading Failed: ' + err);
       }
