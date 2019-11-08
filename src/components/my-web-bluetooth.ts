@@ -6,6 +6,7 @@ import { SharedStyles } from './shared-styles.js';
 
 import './my-heart-rate.js';
 import './my-myo-band.js';
+import './my-thermal-printer.js';
 
 enum WebBluetoothDemo {
   heartRate = 'heartRate',
@@ -91,7 +92,7 @@ export class MyWebBluetooth extends PageViewElement {
             `
           : this.demo === WebBluetoothDemo.ThermalPrinter
           ? html`
-              Thermal
+              <my-thermal-printer></my-thermal-printer>
             `
           : html``}
       </section>

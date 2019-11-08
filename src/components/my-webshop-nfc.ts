@@ -8,7 +8,7 @@ declare const NDEFReader: any;
 declare const NDEFWriter: any;
 
 @customElement('my-webshop-nfc')
-export class MyMyoArmBand extends LitElement {
+export class MyWebshopNFC extends LitElement {
   static get styles() {
     return [
       SharedStyles,
