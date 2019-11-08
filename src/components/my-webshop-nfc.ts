@@ -212,7 +212,7 @@ export class MyWebshopNFC extends LitElement {
           const decoder = new TextDecoder();
           for (let record of message.records) {
             console.log('RecordType', record.recordType, record);
-            if (record.recordType === 'json') {
+            if (record.recordType === 'mime') {
               if (record.mediaType === 'application/json') {
                 const _record = JSON.parse(decoder.decode(record.data));
                 console.log(_record);
