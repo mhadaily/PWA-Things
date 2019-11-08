@@ -3,7 +3,9 @@ import { PageViewElement } from './page-view-element.js';
 
 // These are the shared styles needed by this element.
 import { SharedStyles } from './shared-styles.js';
+
 import './my-adb.js';
+import './my-thermal-printer-usb.js';
 
 enum WebUSBDemo {
   adb = 'adb',
@@ -58,7 +60,7 @@ export class MyWebUSB extends PageViewElement {
             `
           : this.demo === WebUSBDemo.printer
           ? html`
-              coming soon...
+              <my-thermal-printer-usb></my-thermal-printer-usb>
             `
           : html``}
       </section>
