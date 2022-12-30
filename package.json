@@ -39,7 +39,7 @@
     "gulp": "^4.0.2",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "netlify-cli": "^2.17.0",
     "pixelmatch": "^5.0.2",
     "polymer-cli": "^1.9.11",
